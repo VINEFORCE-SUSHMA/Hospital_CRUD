@@ -1,0 +1,102 @@
+<form class="form-horizontal" autocomplete="off" #editPatientModal="ngForm" (ngSubmit)="save()">
+    <abp-modal-header [title]="'EditPatient' | localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+
+    <div class="modal-body">
+        <tabset>
+            <tab [heading]="'PatientDetails' | localize" class="pt-3 px-2">
+
+                <!-- Patient Code -->
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label" for="PatientCode">{{ 'PatientCode' | localize }}</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" id="PatientCode" name="PatientCode" maxlength="20"
+                               required [(ngModel)]="patient.patientCode" #patientCodeModel="ngModel" #patientCodeEl />
+                        <abp-validation-summary [control]="patientCodeModel" [controlEl]="patientCodeEl"></abp-validation-summary>
+                    </div>
+                </div>
+
+                <!-- First Name -->
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label" for="FirstName">{{ 'FirstName' | localize }}</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" id="FirstName" name="FirstName" maxlength="64"
+                               required [(ngModel)]="patient.firstName" #firstNameModel="ngModel" #firstNameEl />
+                        <abp-validation-summary [control]="firstNameModel" [controlEl]="firstNameEl"></abp-validation-summary>
+                    </div>
+                </div>
+
+                <!-- Last Name -->
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label" for="LastName">{{ 'LastName' | localize }}</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" id="LastName" name="LastName" maxlength="64"
+                               required [(ngModel)]="patient.lastName" #lastNameModel="ngModel" #lastNameEl />
+                        <abp-validation-summary [control]="lastNameModel" [controlEl]="lastNameEl"></abp-validation-summary>
+                    </div>
+                </div>
+
+                <!-- Date of Birth -->
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label" for="DateOfBirth">{{ 'DateOfBirth' | localize }}</label>
+                    <div class="col-md-9">
+                        <input type="date" class="form-control" id="DateOfBirth" name="DateOfBirth"
+                               required [(ngModel)]="patient.dateOfBirth" #dobModel="ngModel" #dobEl />
+                        <abp-validation-summary [control]="dobModel" [controlEl]="dobEl"></abp-validation-summary>
+                    </div>
+                </div>
+
+                <!-- Gender -->
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label" for="Gender">{{ 'Gender' | localize }}</label>
+                    <div class="col-md-9">
+                        <select class="form-control" id="Gender" name="Gender" required
+                                [(ngModel)]="patient.gender" #genderModel="ngModel" #genderEl>
+                            <option value="" disabled selected>{{ 'SelectGender' | localize }}</option>
+                            <option value="Male">{{ 'Male' | localize }}</option>
+                            <option value="Female">{{ 'Female' | localize }}</option>
+                            <option value="Other">{{ 'Other' | localize }}</option>
+                        </select>
+                        <abp-validation-summary [control]="genderModel" [controlEl]="genderEl"></abp-validation-summary>
+                    </div>
+                </div>
+
+                <!-- Phone Number -->
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="phoneNumber">{{ 'PhoneNumber' | localize }}</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" maxlength="20"
+                               [(ngModel)]="patient.phoneNumber" #phoneModel="ngModel" #phoneEl />
+                        <abp-validation-summary [control]="phoneModel" [controlEl]="phoneEl"></abp-validation-summary>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="Email">{{ 'Email' | localize }}</label>
+                    <div class="col-md-9">
+                        <input type="email" class="form-control" id="Email" name="Email" maxlength="256"
+                               pattern="^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
+                               [(ngModel)]="patient.email" #emailModel="ngModel" #emailEl />
+                        <abp-validation-summary [control]="emailModel" [controlEl]="emailEl"></abp-validation-summary>
+                    </div>
+                </div>
+
+                <!-- Address -->
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="Address">{{ 'Address' | localize }}</label>
+                    <div class="col-md-9">
+                        <textarea class="form-control" id="Address" name="Address" rows="3"
+                                  [(ngModel)]="patient.address" #addressModel="ngModel" #addressEl></textarea>
+                        <abp-validation-summary [control]="addressModel" [controlEl]="addressEl"></abp-validation-summary>
+                    </div>
+                </div>
+
+            </tab>
+        </tabset>
+    </div>
+
+    <abp-modal-footer
+        [saveDisabled]="!editPatientModal.form.valid || saving"
+        (onCancelClick)="bsModalRef.hide()">
+    </abp-modal-footer>
+</form>

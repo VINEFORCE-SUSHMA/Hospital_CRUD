@@ -1,0 +1,51 @@
+<abp-modal-header [title]="'CreatePatient' | localize"></abp-modal-header>
+
+<div class="modal-body">
+  <form>
+    <div class="form-group">
+      <label>{{ 'PatientCode' | localize }}</label>
+      <input type="text" class="form-control" [(ngModel)]="patient.patientCode" name="patientCode">
+    </div>
+
+    <div class="form-group">
+      <label>{{ 'FirstName' | localize }}</label>
+      <input type="text" class="form-control" [(ngModel)]="patient.firstName" name="firstName" required>
+    </div>
+
+    <div class="form-group">
+      <label>{{ 'LastName' | localize }}</label>
+      <input type="text" class="form-control" [(ngModel)]="patient.lastName" name="lastName" required>
+    </div>
+
+    <div class="form-group">
+      <label>{{ 'DateOfBirth' | localize }}</label>
+      <input type="date" class="form-control" [(ngModel)]="patient.dateOfBirth" name="dateOfBirth">
+    </div>
+
+    <div class="form-group">
+      <label>{{ 'Gender' | localize }}</label>
+      <select class="form-control" [(ngModel)]="patient.gender" name="gender">
+        <option *ngFor="let g of genders" [value]="g.value">{{ g.label }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>{{ 'PhoneNumber' | localize }}</label>
+      <input type="text" class="form-control" [(ngModel)]="patient.phoneNumber" name="phoneNumber">
+    </div>
+
+    <div class="form-group">
+      <label>{{ 'Email' | localize }}</label>
+      <input type="email" class="form-control" [(ngModel)]="patient.email" name="email">
+    </div>
+
+    <div class="form-group">
+      <label>{{ 'Address' | localize }}</label>
+      <textarea class="form-control" [(ngModel)]="patient.address" name="address"></textarea>
+    </div>
+  </form>
+</div>
+
+<abp-modal-footer>
+  <button class="btn btn-secondary" (click)="bsModalRef.hide()">{{ 'Cancel' | localize }}</button>
+  <button class="btn btn-primary" (click)="save()" [disabled]="saving">{{ 'Save' | localize }}</button>
