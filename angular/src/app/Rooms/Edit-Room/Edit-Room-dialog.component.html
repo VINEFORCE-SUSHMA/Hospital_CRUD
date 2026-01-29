@@ -1,0 +1,108 @@
+<form class="form-horizontal"
+      autocomplete="off"
+      #editRoomModal="ngForm"
+      (ngSubmit)="save()">
+
+    <abp-modal-header
+        [title]="'EditRoom' | localize"
+        (onCloseClick)="bsModalRef.hide()">
+    </abp-modal-header>
+
+    <div class="modal-body">
+        <tabset>
+            <tab [heading]="'RoomDetails' | localize" class="pt-3 px-2">
+
+                <!-- Room Number -->
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label" for="RoomNumber">
+                        {{ 'RoomNumber' | localize }}
+                    </label>
+                    <div class="col-md-9">
+                        <input type="text"
+                               class="form-control"
+                               id="RoomNumber"
+                               name="RoomNumber"
+                               maxlength="20"
+                               required
+                               [(ngModel)]="room.roomNumber"
+                               #roomNumberModel="ngModel"
+                               #roomNumberEl />
+                        <abp-validation-summary
+                            [control]="roomNumberModel"
+                            [controlEl]="roomNumberEl">
+                        </abp-validation-summary>
+                    </div>
+                </div>
+
+                <!-- Room Type -->
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label" for="RoomType">
+                        {{ 'RoomType' | localize }}
+                    </label>
+                    <div class="col-md-9">
+                        <input type="text"
+                               class="form-control"
+                               id="RoomType"
+                               name="RoomType"
+                               maxlength="50"
+                               required
+                               [(ngModel)]="room.roomType"
+                               #roomTypeModel="ngModel"
+                               #roomTypeEl />
+                        <abp-validation-summary
+                            [control]="roomTypeModel"
+                            [controlEl]="roomTypeEl">
+                        </abp-validation-summary>
+                    </div>
+                </div>
+
+                <!-- Total Beds -->
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label" for="TotalBeds">
+                        {{ 'TotalBeds' | localize }}
+                    </label>
+                    <div class="col-md-9">
+                        <input type="number"
+                               class="form-control"
+                               id="TotalBeds"
+                               name="TotalBeds"
+                               min="1"
+                               required
+                               [(ngModel)]="room.totalBeds"
+                               #totalBedsModel="ngModel"
+                               #totalBedsEl />
+                        <abp-validation-summary
+                            [control]="totalBedsModel"
+                            [controlEl]="totalBedsEl">
+                        </abp-validation-summary>
+                    </div>
+                </div>
+
+                <!-- Is Active -->
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">
+                        {{ 'IsActive' | localize }}
+                    </label>
+                    <div class="col-md-9 pt-2">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox"
+                                   class="custom-control-input"
+                                   id="IsActive"
+                                   name="IsActive"
+                                   [(ngModel)]="room.isActive" />
+                            <label class="custom-control-label" for="IsActive">
+                                {{ 'Active' | localize }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </tab>
+        </tabset>
+    </div>
+
+    <abp-modal-footer
+        [saveDisabled]="!editRoomModal.form.valid || saving"
+        (onCancelClick)="bsModalRef.hide()">
+    </abp-modal-footer>
+</form>

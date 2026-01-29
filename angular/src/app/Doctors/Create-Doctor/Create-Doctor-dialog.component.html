@@ -1,0 +1,122 @@
+<form class="form-horizontal" autocomplete="off" #createDoctorForm="ngForm" (ngSubmit)="save()">
+    <abp-modal-header [title]="'CreateDoctor' | localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+
+    <div class="modal-body">
+        <tabset>
+            <tab [heading]="'DoctorDetails' | localize" class="pt-3 px-2">
+
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label" for="doctorCode">{{ 'DoctorCode' | localize }}</label>
+                    <div class="col-md-9">
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="doctorCode"
+                            id="doctorCode"
+                            required
+                            maxlength="32"
+                            [(ngModel)]="doctor.doctorCode"
+                            #doctorCodeModel="ngModel"
+                            #doctorCodeEl
+                        />
+                        <abp-validation-summary [control]="doctorCodeModel" [controlEl]="doctorCodeEl"></abp-validation-summary>
+                    </div>
+                </div>
+
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label" for="fullName">{{ 'FullName' | localize }}</label>
+                    <div class="col-md-9">
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="fullName"
+                            id="fullName"
+                            required
+                            maxlength="128"
+                            [(ngModel)]="doctor.fullName"
+                            #fullNameModel="ngModel"
+                            #fullNameEl
+                        />
+                        <abp-validation-summary [control]="fullNameModel" [controlEl]="fullNameEl"></abp-validation-summary>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="specialization">{{ 'Specialization' | localize }}</label>
+                    <div class="col-md-9">
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="specialization"
+                            id="specialization"
+                            [(ngModel)]="doctor.specialization"
+                        />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="qualification">{{ 'Qualification' | localize }}</label>
+                    <div class="col-md-9">
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="qualification"
+                            id="qualification"
+                            [(ngModel)]="doctor.qualification"
+                        />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="phoneNumber">{{ 'PhoneNumber' | localize }}</label>
+                    <div class="col-md-9">
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="phoneNumber"
+                            id="phoneNumber"
+                            [(ngModel)]="doctor.phoneNumber"
+                        />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="email">{{ 'Email' | localize }}</label>
+                    <div class="col-md-9">
+                        <input
+                            type="email"
+                            class="form-control"
+                            name="email"
+                            id="email"
+                            [(ngModel)]="doctor.email"
+                        />
+                    </div>
+                </div>
+
+                <div class="form-group row mb-0">
+                    <label class="col-md-3 col-form-label">{{ 'IsActive' | localize }}</label>
+                    <div class="col-md-9">
+                        <div class="custom-control custom-checkbox">
+                            <input
+                                type="checkbox"
+                                class="custom-control-input"
+                                name="isActive"
+                                id="isActive"
+                                [(ngModel)]="doctor.isActive"
+                            />
+                            <label class="custom-control-label mt-2" for="isActive"></label>
+                        </div>
+                    </div>
+                </div>
+
+            </tab>
+        </tabset>
+    </div>
+
+    <abp-modal-footer
+        [cancelDisabled]="saving"
+        [saveDisabled]="!createDoctorForm.form.valid || saving"
+        (onCancelClick)="bsModalRef.hide()">
+    </abp-modal-footer>
+</form>
+

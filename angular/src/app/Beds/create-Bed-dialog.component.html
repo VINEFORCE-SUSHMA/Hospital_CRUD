@@ -1,0 +1,74 @@
+<form class="form-horizontal" autocomplete="off" #createBedForm="ngForm" (ngSubmit)="save()">
+    <abp-modal-header [title]="'CreateBed' | localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+
+    <div class="modal-body">
+        <tabset>
+            <tab [heading]="'BedDetails' | localize" class="pt-3 px-2">
+
+                <!-- Bed Number -->
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label" for="bedNumber">{{ 'BedNumber' | localize }}</label>
+                    <div class="col-md-9">
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="bedNumber"
+                            id="bedNumber"
+                            required
+                            maxlength="32"
+                            [(ngModel)]="bed.bedNumber"
+                            #bedNumberModel="ngModel"
+                            #bedNumberEl
+                        />
+                        <abp-validation-summary [control]="bedNumberModel" [controlEl]="bedNumberEl"></abp-validation-summary>
+                    </div>
+                </div>
+
+                <!-- Room Dropdown -->
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label" for="roomId">{{ 'Room' | localize }}</label>
+                    <div class="col-md-9">
+                        <select
+                            class="form-control"
+                            name="roomId"
+                            id="roomId"
+                            required
+                            [(ngModel)]="bed.roomId"
+                            #roomIdModel="ngModel"
+                            #roomIdEl
+                        >
+                            <option *ngFor="let room of rooms" [value]="room.id">{{ room.name }}</option>
+                        </select>
+                        <abp-validation-summary [control]="roomIdModel" [controlEl]="roomIdEl"></abp-validation-summary>
+                    </div>
+                </div>
+
+                <!-- Is Occupied Checkbox -->
+                <div class="form-group row mb-0">
+                    <label class="col-md-3 col-form-label">{{ 'IsOccupied' | localize }}</label>
+                    <div class="col-md-9">
+                        <div class="custom-control custom-checkbox">
+                            <input
+                                type="checkbox"
+                                class="custom-control-input"
+                                name="isOccupied"
+                                id="isOccupied"
+                                [(ngModel)]="bed.isOccupied"
+                            />
+                            <label class="custom-control-label mt-2" for="isOccupied"></label>
+                        </div>
+                    </div>
+                </div>
+
+            </tab>
+        </tabset>
+    </div>
+
+    <abp-modal-footer
+        [cancelDisabled]="saving"
+        [saveDisabled]="!createBedForm.form.valid || saving"
+        (onCancelClick)="bsModalRef.hide()">
+    </abp-modal-footer>
+</form>
+
+

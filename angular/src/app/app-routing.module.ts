@@ -48,6 +48,31 @@ import { AppComponent } from './app.component';
                        loadChildren: () => import('./Patients/Patient.modeule').then(m => m.PatientsModule),
                       canActivate: [AppRouteGuard], 
                     },
+                    //   {
+                    //    path: 'patients',
+                    //    loadChildren: () => import('./Patients/Patient.modeule').then(m => m.PatientsModule),
+                    //   canActivate: [AppRouteGuard],
+                    // },
+                      {
+                       path: 'Doctors',
+                       loadChildren: () => import('./Doctors/Doctor.module').then(m => m.DoctorsModule),
+                      canActivate: [AppRouteGuard], 
+                    },
+                    //      {
+                    //    path: 'Doctors',
+                    //    loadChildren: () => import('./Doctors/Doctor.module').then(m => m.DoctorsModule),
+                    //   canActivate: [AppRouteGuard], 
+                    // },
+                         {
+                         path: 'rooms',
+                       loadChildren: () => import('./rooms/Room-module').then(m => m.RoomsModule),
+                      canActivate: [AppRouteGuard],
+                  },
+                         {
+                       path: 'beds',
+                      loadChildren: () => import('./beds/bed.module').then(m => m.BedsModule),
+                       canActivate: [AppRouteGuard],
+                    },
                 ],
             },
         ]),

@@ -1,20 +1,21 @@
-﻿using Abp.Domain.Entities.Auditing;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UserCrud.Doctors
+namespace UserCrud.Doctors.Dtos
 {
-    public class Doctor : FullAuditedEntity<long>
+   public class UpdateDoctorDto
+
+
     {
-        public string DoctorCode { get; set; } 
+        public long Id { get; set; }
         public string FullName { get; set; }
         public string Specialization { get; set; }
         public string Qualification { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
-        public bool IsActive { get; set; } 
+        public bool IsActive { get; set; }
     }
 }

@@ -17,7 +17,7 @@ import { CreatePatientDialogComponent } from './Creare-Patient/Create-Patient-di
  
 @Component({
   templateUrl: './patient.component.html',
-  styleUrl: './patient.component.css',
+  
   animations: [appModuleAnimation()],
    standalone: true,
  imports: [FormsModule, TableModule, PrimeTemplate, PaginatorModule, LocalizePipe,CommonModule]

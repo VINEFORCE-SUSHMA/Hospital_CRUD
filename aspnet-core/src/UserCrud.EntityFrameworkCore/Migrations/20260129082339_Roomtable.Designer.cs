@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UserCrud.EntityFrameworkCore;
 
@@ -11,9 +12,11 @@ using UserCrud.EntityFrameworkCore;
 namespace UserCrud.Migrations
 {
     [DbContext(typeof(UserCrudDbContext))]
-    partial class UserCrudDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260129082339_Roomtable")]
+    partial class Roomtable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1583,30 +1586,6 @@ namespace UserCrud.Migrations
                     b.ToTable("AbpUsers");
                 });
 
-            modelBuilder.Entity("UserCrud.Beds.Bed", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("BedNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsOccupied")
-                        .HasColumnType("bit");
-
-                    b.Property<long>("RoomId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoomId");
-
-                    b.ToTable("Beds");
-                });
-
             modelBuilder.Entity("UserCrud.Doctors.Doctor", b =>
                 {
                     b.Property<long>("Id")
@@ -2046,17 +2025,6 @@ namespace UserCrud.Migrations
                     b.Navigation("DeleterUser");
 
                     b.Navigation("LastModifierUser");
-                });
-
-            modelBuilder.Entity("UserCrud.Beds.Bed", b =>
-                {
-                    b.HasOne("UserCrud.Rooms.Room", "Room")
-                        .WithMany()
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("UserCrud.MultiTenancy.Tenant", b =>
