@@ -16,7 +16,8 @@ import * as ApiServiceProxies from './service-proxies';
         ApiServiceProxies.PatientServiceProxy,
         ApiServiceProxies.DoctorServiceProxy,
         ApiServiceProxies.RoomServiceProxy,
-             ApiServiceProxies.BedServiceProxy,
+        ApiServiceProxies.BedServiceProxy,
+        ApiServiceProxies.PatientAdmissionServiceProxy,
         { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true },
     ],
 })

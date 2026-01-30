@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UserCrud.Beds.Dtos;
 using UserCrud.Rooms;
+using UserCrud.Rooms.Dtos;
 
 namespace UserCrud.Beds
 {
@@ -27,6 +28,21 @@ namespace UserCrud.Beds
             _bedRepository = bedRepository;
             _roomRepository = roomRepository;
             _mapper = mapper;
+        }
+
+
+        public async Task<ListResultDto<RoomLookupDto>> GetRoomLookupAsync()
+        {
+            var rooms = await _roomRepository
+                .GetAll()
+                .Select(r => new RoomLookupDto
+                {
+                    Id = r.Id,
+                    RoomNumber = r.RoomNumber
+                })
+                .ToListAsync();
+
+            return new ListResultDto<RoomLookupDto>(rooms);
         }
 
         public async Task<List<BedDto>> GetAllAsync()

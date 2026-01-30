@@ -24,9 +24,9 @@ namespace UserCrud.PattientsAdmission
         public string Status { get; set; }
 
         // Navigation properties
-        public virtual patient Patient { get; set; }
-        public virtual Doctor Doctor { get; set; }
-        public virtual Bed Bed { get; set; }
+        public virtual UserCrud.Patients.patient Patient { get; set; }
+        public virtual UserCrud.Doctors. Doctor Doctor { get; set; }
+        public virtual UserCrud.Beds. Bed Bed { get; set; }
     }
 }
 

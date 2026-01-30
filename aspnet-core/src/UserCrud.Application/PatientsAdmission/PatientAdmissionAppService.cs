@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services;
+using Abp.Application.Services.Dto;
 using Abp.Domain.Repositories;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -9,14 +10,26 @@ using System.Text;
 using System.Threading.Tasks;
 using UserCrud.Beds;
 using UserCrud.Doctors;
+using UserCrud.Doctors.Dtos;
 using UserCrud.Patients;
 using UserCrud.PatientsAdmission.Dtos;
 using UserCrud.PattientsAdmission;
 
 namespace UserCrud.PatientsAdmission
 {
-    public class PatientAdmissionAppService : ApplicationService,
-       IPatientAdmissionAppService
+    namespace UserCrud.PatientsAdmission
+    {
+        public interface IPatientAdmissionAppService : IApplicationService
+        {
+            Task<List<PatientAdmissionDto>> GetAllAsync();
+            Task<PatientAdmissionDto> GetAsync(long id);
+            Task<PatientAdmissionDto> CreateAsync(CreatePatientAdmissionDto input);
+            Task<PatientAdmissionDto> UpdateAsync(long id, UpdatePatientAdmissionDto input);
+            Task DeleteAsync(long id);
+        }
+
+    }
+    public class PatientAdmissionAppService : ApplicationService, UserCrud.PatientsAdmission.IPatientAdmissionAppService
     {
         private readonly IRepository<PatientAdmission, long> _admissionRepository;
         private readonly IRepository<patient, long> _patientRepository;
@@ -38,6 +51,24 @@ namespace UserCrud.PatientsAdmission
             _mapper = mapper;
         }
 
+
+        public async Task<ListResultDto<DoctorLookupDto>> GetDoctorLookupAsync()
+        {
+            var doctors = await _doctorRepository
+                .GetAll()
+                .Where(d => d.IsActive) // only active doctors
+                .Select(d => new DoctorLookupDto
+                {
+                    Id = d.Id,
+                    FullName = d.FullName,
+                    DoctorCode = d.DoctorCode,
+                    Specialization = d.Specialization
+                })
+                .OrderBy(d => d.FullName)
+                .ToListAsync();
+
+            return new ListResultDto<DoctorLookupDto>(doctors);
+        }
         // Get all admissions
         public async Task<List<PatientAdmissionDto>> GetAllAsync()
         {

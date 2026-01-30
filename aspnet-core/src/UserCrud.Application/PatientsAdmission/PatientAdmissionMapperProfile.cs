@@ -20,7 +20,8 @@ namespace UserCrud.PatientsAdmission
 
         {
             CreateMap<PatientAdmission, PatientAdmissionDto>()
-                    .ForMember(dest => dest.PatientName, opt => opt.MapFrom(src => src.Patient.FullName))
+                       .ForMember(dest => dest.PatientName, opt => opt.MapFrom(src => src.Patient.FullName))
+    .ForMember(dest => dest.PatientGender, opt => opt.MapFrom(src => (int)src.Patient.Gender))
                     .ForMember(dest => dest.DoctorName, opt => opt.MapFrom(src => src.Doctor.FullName))
                     .ForMember(dest => dest.BedNumber, opt => opt.MapFrom(src => src.Bed.BedNumber));
 

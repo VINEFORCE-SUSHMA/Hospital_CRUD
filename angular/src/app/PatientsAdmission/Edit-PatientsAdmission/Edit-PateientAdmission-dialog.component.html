@@ -1,0 +1,94 @@
+<form class="form-horizontal" autocomplete="off" #editAdmissionForm="ngForm" (ngSubmit)="save()">
+    <abp-modal-header [title]="'EditPatientAdmission' | localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+
+    <div class="modal-body">
+        <tabset>
+            <tab [heading]="'AdmissionDetails' | localize" class="pt-3 px-2">
+
+                <!-- Patient Dropdown -->
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label">{{ 'Patient' | localize }}</label>
+                    <div class="col-md-9">
+                        <select
+                            class="form-control"
+                            [(ngModel)]="admission.patientId"
+                            name="patientId"
+                            required
+                        >
+                            <option *ngFor="let patient of patients" [value]="patient.id">{{ patient.fullName }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Doctor Dropdown -->
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label">{{ 'Doctor' | localize }}</label>
+                    <div class="col-md-9">
+                        <select
+                            class="form-control"
+                            [(ngModel)]="admission.doctorId"
+                            name="doctorId"
+                            required
+                        >
+                            <option *ngFor="let doctor of doctors" [value]="doctor.id">{{ doctor.fullName }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Bed Dropdown -->
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label">{{ 'Bed' | localize }}</label>
+                    <div class="col-md-9">
+                        <select
+                            class="form-control"
+                            [(ngModel)]="admission.bedId"
+                            name="bedId"
+                            required
+                        >
+                            <option *ngFor="let bed of beds" [value]="bed.id">{{ bed.bedNumber }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Admission Date -->
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label">{{ 'AdmissionDate' | localize }}</label>
+                    <div class="col-md-9">
+                        <input type="datetime-local" class="form-control" [(ngModel)]="admission.admissionDate" name="admissionDate" required />
+                    </div>
+                </div>
+
+                <!-- Discharge Date -->
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">{{ 'DischargeDate' | localize }}</label>
+                    <div class="col-md-9">
+                        <input type="datetime-local" class="form-control" [(ngModel)]="admission.dischargeDate" name="dischargeDate" />
+                    </div>
+                </div>
+
+                <!-- Diagnosis -->
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">{{ 'Diagnosis' | localize }}</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" [(ngModel)]="admission.diagnosis" name="diagnosis" />
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">{{ 'Status' | localize }}</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" [(ngModel)]="admission.status" name="status" />
+                    </div>
+                </div>
+
+            </tab>
+        </tabset>
+    </div>
+
+    <abp-modal-footer
+        [cancelDisabled]="saving"
+        [saveDisabled]="!editAdmissionForm.form.valid || saving"
+        (onCancelClick)="bsModalRef.hide()">
+    </abp-modal-footer>
+</form>

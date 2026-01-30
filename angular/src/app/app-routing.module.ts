@@ -73,6 +73,11 @@ import { AppComponent } from './app.component';
                       loadChildren: () => import('./beds/bed.module').then(m => m.BedsModule),
                        canActivate: [AppRouteGuard],
                     },
+                        {
+                       path: 'patientsAdmission',
+                      loadChildren: () => import('./PatientsAdmission/PatientAdmission-module').then(m => m.PatientAdmissionsModule),
+                       canActivate: [AppRouteGuard],
+                    },
                 ],
             },
         ]),
