@@ -1,7 +1,7 @@
 
 import { Component, Injector, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { Table } from 'primeng/table';
+import {  TableModule } from 'primeng/table';
 import { Paginator } from 'primeng/paginator';
 import { LazyLoadEvent } from 'primeng/api';
 import { FormsModule } from '@angular/forms';
@@ -14,14 +14,15 @@ import { BedDto, BedServiceProxy } from '../../shared/service-proxies/service-pr
 import { CreateBedDialogComponent } from '../Beds/create-Bed-dialog.component';
 import { EditBedDialogComponent } from './Edit-Bed/Edit-Bed-dialog.component';
 
+
 @Component({
   templateUrl: './Bed.component.html',
   animations: [appModuleAnimation()],
   standalone: true,
-  imports: [FormsModule, CommonModule, NgIf],
+  imports: [FormsModule, CommonModule, NgIf, TableModule],
 })
 export class BedsComponent extends PagedListingComponentBase<BedDto> {
-  @ViewChild('dataTable', { static: true }) dataTable: Table;
+  @ViewChild('dataTable', { static: true }) dataTable: TableModule;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
 
   beds: BedDto[] = [];

@@ -6,6 +6,7 @@ using UserCrud.Beds;
 using UserCrud.Doctors;
 using UserCrud.MultiTenancy;
 using UserCrud.Patients;
+using UserCrud.PattientsAdmission;
 using UserCrud.Rooms;
 
 namespace UserCrud.EntityFrameworkCore;
@@ -21,4 +22,5 @@ public class UserCrudDbContext : AbpZeroDbContext<Tenant, Role, User, UserCrudDb
     public DbSet<Doctor> Doctors { get; set; }
     public DbSet<Room> Rooms { get; set; }
     public DbSet<Bed> Beds { get; set; }
+    public DbSet<PatientAdmission> PatientsAdmission { get; set; }
 }

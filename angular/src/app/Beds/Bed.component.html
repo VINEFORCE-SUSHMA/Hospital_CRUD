@@ -1,55 +1,82 @@
 <div [@routerTransition]>
+
+  <!-- Header -->
   <section class="content-header">
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-6">
+      <div class="row align-items-center">
+        <div class="col-md-6">
           <h1>Beds</h1>
         </div>
-        <h1>Beds</h1>
-        <i class="fa fa-plus-square"></i> Create
-        <input class="form-control" placeholder="Search..." />
 
+        <div class="col-md-6 text-right">
+          <button class="btn btn-primary" (click)="createBed()" >
+            <i class="fa fa-plus-square"></i> Create
           </button>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Content -->
   <section class="content px-2 pb-3">
     <div class="container-fluid">
       <div class="card table-wrapper">
+
+        <!-- Card Header -->
         <div class="card-header">
           <div class="row">
-            <div class="col-md-6">&emsp;</div>
+            <div class="col-md-6"></div>
+
             <div class="col-md-6">
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search..." 
-                       [(ngModel)]="keyword" (keyup.enter)="list()" />
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Search..."
+                  [(ngModel)]="keyword"
+                  (keyup.enter)="list()"
+                />
+
                 <div class="input-group-append">
-                  <button type="button" class="btn btn-default" (click)="advancedFiltersVisible = !advancedFiltersVisible">
-                    <i class="fas" [class.fa-angle-up]="advancedFiltersVisible" [class.fa-angle-down]="!advancedFiltersVisible"></i>
+                  <button
+                    type="button"
+                    class="btn btn-default"
+                    (click)="advancedFiltersVisible = !advancedFiltersVisible">
+                    <i
+                      class="fas"
+                      [class.fa-angle-up]="advancedFiltersVisible"
+                      [class.fa-angle-down]="!advancedFiltersVisible">
+                    </i>
                   </button>
                 </div>
               </div>
             </div>
           </div>
 
-          <div *ngIf="advancedFiltersVisible" class="card mb-0 mt-1">
+          <!-- Advanced Filters -->
+          <div *ngIf="advancedFiltersVisible" class="card mb-0 mt-2">
             <div class="card-body">
-              <div class="form-group">
+              <div class="form-group mb-0">
                 <label>Occupied</label>
-                <select class="form-control" [(ngModel)]="keyword">
+                <select class="form-control" [(ngModel)]="occupiedFilter">
                   <option value="">All</option>
-                  <option value="true">Yes</option>
-                  <option value="false">No</option>
+                  <option [ngValue]="true">Yes</option>
+                  <option [ngValue]="false">No</option>
                 </select>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="card-body table-responsive table-striped table-bordered">
-          <p-table #dataTable [value]="primengTableHelper.records" [lazy]="true" (onLazyLoad)="list()">
+        <!-- Table -->
+        <div class="card-body table-responsive p-0">
+          <p-table
+            #dataTable
+            [value]="primengTableHelper.records"
+            [lazy]="true"
+            (onLazyLoad)="list()"
+            class="table table-striped table-bordered">
+
             <ng-template pTemplate="header">
               <tr>
                 <th pSortableColumn="bedNumber">Bed Number</th>
@@ -58,6 +85,7 @@
                 <th>Actions</th>
               </tr>
             </ng-template>
+
             <ng-template pTemplate="body" let-bed>
               <tr>
                 <td>{{ bed.bedNumber }}</td>
@@ -67,15 +95,19 @@
                   <button class="btn btn-sm bg-secondary" (click)="editBed(bed)">
                     <i class="fas fa-pencil-alt"></i> Edit
                   </button>
+
                   <button class="btn btn-sm bg-danger mx-2" (click)="deleteBed(bed)">
                     <i class="fas fa-trash"></i> Delete
                   </button>
                 </td>
               </tr>
             </ng-template>
+
           </p-table>
         </div>
+
       </div>
     </div>
   </section>
 </div>
+

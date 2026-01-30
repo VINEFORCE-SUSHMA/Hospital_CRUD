@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit, EventEmitter, Output } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { AppComponentBase } from '@shared/app-component-base';
-import { BedServiceProxy, CreateBedDto, RoomServiceProxy } from '@shared/service-proxies/service-proxies';
+import { BedServiceProxy, CreateBedDto, RoomDto, RoomServiceProxy } from '@shared/service-proxies/service-proxies';
 import { FormsModule } from '@angular/forms';
 import { AbpModalHeaderComponent } from '@shared/components/modal/abp-modal-header.component';
 import { AbpModalFooterComponent } from '@shared/components/modal/abp-modal-footer.component';
@@ -27,7 +27,7 @@ export class CreateBedDialogComponent extends AppComponentBase implements OnInit
 
     saving = false;
     bed = new CreateBedDto();
-    rooms: { id: number; name: string }[] = []; // Rooms for FK dropdown
+    rooms: { id: number;roomName: RoomDto }[] = []; // Rooms for FK dropdown
 
     constructor(
         injector: Injector,
@@ -40,13 +40,15 @@ export class CreateBedDialogComponent extends AppComponentBase implements OnInit
 
     ngOnInit(): void {
         this.bed.isOccupied = false;
+            this.loadRooms();
+}
 
-    //     // Load rooms for dropdown
-    //     this._roomService.getAll().subscribe((result) => {
-    //         this.rooms = result;
-    //     });
-    // 
-    }
+    loadRooms(): void {
+    this._roomService.getAll().subscribe((result: any) => {
+       
+        this.rooms = result.items ?? result;
+    });
+}
 
     save(): void {
         this.saving = true;

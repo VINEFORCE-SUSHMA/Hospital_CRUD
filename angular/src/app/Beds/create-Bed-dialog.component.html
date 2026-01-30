@@ -36,8 +36,11 @@
                             [(ngModel)]="bed.roomId"
                             #roomIdModel="ngModel"
                             #roomIdEl
+
+                        
+
                         >
-                            <option *ngFor="let room of rooms" [value]="room.id">{{ room.name }}</option>
+                            <option *ngFor="let room of rooms" [ngValue]="room.id">{{ room.roomName }}</option>
                         </select>
                         <abp-validation-summary [control]="roomIdModel" [controlEl]="roomIdEl"></abp-validation-summary>
                     </div>
