@@ -13,9 +13,9 @@ interface PatientDto { id: number; name: string; }
 interface DoctorDto { id: number; fullName: string; }
 interface BedDto { id: number; isOccupied: boolean; }
 interface CreatePatientAdmissionDto {
-status: any;
-diagnosis: any;
-dischargeDate: any;
+    status: any;
+    diagnosis: any;
+    dischargeDate: any;
     patientId?: number;
     doctorId?: number;
     bedId?: number;
@@ -23,25 +23,39 @@ dischargeDate: any;
 }
 
 // Dummy service proxies (replace with actual services)
-class PatientAdmissionServiceProxy {
-    create(admission: CreatePatientAdmissionDto) { return { subscribe: (obj: any) => obj.next?.() }; }
+class PatientAdmissionServiceProxy2 {
+    create(admission: CreatePatientAdmissionDto) { 
+        return { subscribe: (obj: any) => obj.next?.() }; 
+    }
 }
-class PatientServiceProxy { getAll() { return { subscribe: (obj: any) => obj.next?.({ items: [] }) }; } }
-class DoctorServiceProxy { getAll() { return { subscribe: (obj: any) => obj.next?.({ items: [] }) }; } }
-class BedServiceProxy { getAll() { return { subscribe: (obj: any) => obj.next?.({ items: [] }) }; } }
+class PatientServiceProxy { 
+    getAll() { return { subscribe: (obj: any) => obj.next?.({ items: [] }) }; } 
+}
+class DoctorServiceProxy { 
+    getAll() { return { subscribe: (obj: any) => obj.next?.({ items: [] }) }; } 
+}
+class BedServiceProxy { 
+    getAll() { return { subscribe: (obj: any) => obj.next?.({ items: [] }) }; } 
+}
 
 @Component({
     templateUrl: './Create-PatientAdmission-dialog.component.html',
     standalone: true,
     imports: [
-    CommonModule,
-    FormsModule,
-    TabsModule,
-    AbpModalHeaderComponent,
-    AbpModalFooterComponent,
-    LocalizePipe,
-    AbpValidationSummaryComponent
-]
+        CommonModule,
+        FormsModule,
+        TabsModule,
+        AbpModalHeaderComponent,
+        AbpModalFooterComponent,
+        LocalizePipe,
+        AbpValidationSummaryComponent
+    ],
+    providers: [
+        PatientAdmissionServiceProxy2,
+        PatientServiceProxy,
+        DoctorServiceProxy,
+        BedServiceProxy
+    ]
 })
 export class CreatePatientAdmissionDialogComponent implements OnInit {
 
@@ -49,9 +63,9 @@ export class CreatePatientAdmissionDialogComponent implements OnInit {
 
     saving = false;
     admission: CreatePatientAdmissionDto = {
-      status: undefined,
-      diagnosis: undefined,
-      dischargeDate: undefined
+        status: undefined,
+        diagnosis: undefined,
+        dischargeDate: undefined
     };
 
     patients: PatientDto[] = [];
@@ -67,7 +81,7 @@ export class CreatePatientAdmissionDialogComponent implements OnInit {
     l = (key: string) => key;
 
     constructor(
-        private _admissionService: PatientAdmissionServiceProxy,
+        private _admissionService: PatientAdmissionServiceProxy2,
         private _patientService: PatientServiceProxy,
         private _doctorService: DoctorServiceProxy,
         private _bedService: BedServiceProxy,
