@@ -155,6 +155,57 @@ export class BedServiceProxy {
     /**
      * @return OK
      */
+    getRoomLookup(): Observable<RoomLookupDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/Bed/GetRoomLookup";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRoomLookup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRoomLookup(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<RoomLookupDtoListResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<RoomLookupDtoListResultDto>;
+        }));
+    }
+
+    protected processGetRoomLookup(response: HttpResponseBase): Observable<RoomLookupDtoListResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = RoomLookupDtoListResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
     getAll(): Observable<BedDto[]> {
         let url_ = this.baseUrl + "/api/services/app/Bed/GetAll";
         url_ = url_.replace(/[?&]$/, "");
@@ -1099,6 +1150,57 @@ export class PatientAdmissionServiceProxy {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getDoctorLookup(): Observable<DoctorLookupDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/PatientAdmission/GetDoctorLookup";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDoctorLookup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDoctorLookup(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<DoctorLookupDtoListResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<DoctorLookupDtoListResultDto>;
+        }));
+    }
+
+    protected processGetDoctorLookup(response: HttpResponseBase): Observable<DoctorLookupDtoListResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = DoctorLookupDtoListResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
     }
 
     /**
@@ -3701,7 +3803,6 @@ export class CreatePatientAdmissionDto implements ICreatePatientAdmissionDto {
     dischargeDate: moment.Moment | undefined;
     diagnosis: string | undefined;
     status: string | undefined;
-    isActive: boolean;
 
     constructor(data?: ICreatePatientAdmissionDto) {
         if (data) {
@@ -4086,6 +4187,112 @@ export interface IDoctorDto {
     phoneNumber: string | undefined;
     email: string | undefined;
     isActive: boolean;
+}
+
+export class DoctorLookupDto implements IDoctorLookupDto {
+    id: number;
+    fullName: string | undefined;
+    doctorCode: string | undefined;
+    specialization: string | undefined;
+
+    constructor(data?: IDoctorLookupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.fullName = _data["fullName"];
+            this.doctorCode = _data["doctorCode"];
+            this.specialization = _data["specialization"];
+        }
+    }
+
+    static fromJS(data: any): DoctorLookupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DoctorLookupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["fullName"] = this.fullName;
+        data["doctorCode"] = this.doctorCode;
+        data["specialization"] = this.specialization;
+        return data;
+    }
+
+    clone(): DoctorLookupDto {
+        const json = this.toJSON();
+        let result = new DoctorLookupDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IDoctorLookupDto {
+    id: number;
+    fullName: string | undefined;
+    doctorCode: string | undefined;
+    specialization: string | undefined;
+}
+
+export class DoctorLookupDtoListResultDto implements IDoctorLookupDtoListResultDto {
+    items: DoctorLookupDto[] | undefined;
+
+    constructor(data?: IDoctorLookupDtoListResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items.push(DoctorLookupDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): DoctorLookupDtoListResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DoctorLookupDtoListResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone(): DoctorLookupDtoListResultDto {
+        const json = this.toJSON();
+        let result = new DoctorLookupDtoListResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IDoctorLookupDtoListResultDto {
+    items: DoctorLookupDto[] | undefined;
 }
 
 export class FlatPermissionDto implements IFlatPermissionDto {
@@ -5228,6 +5435,104 @@ export interface IRoomDto {
     roomType: string | undefined;
     totalBeds: number;
     isActive: boolean;
+}
+
+export class RoomLookupDto implements IRoomLookupDto {
+    id: number;
+    roomNumber: string | undefined;
+
+    constructor(data?: IRoomLookupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.roomNumber = _data["roomNumber"];
+        }
+    }
+
+    static fromJS(data: any): RoomLookupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RoomLookupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["roomNumber"] = this.roomNumber;
+        return data;
+    }
+
+    clone(): RoomLookupDto {
+        const json = this.toJSON();
+        let result = new RoomLookupDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IRoomLookupDto {
+    id: number;
+    roomNumber: string | undefined;
+}
+
+export class RoomLookupDtoListResultDto implements IRoomLookupDtoListResultDto {
+    items: RoomLookupDto[] | undefined;
+
+    constructor(data?: IRoomLookupDtoListResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items.push(RoomLookupDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): RoomLookupDtoListResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RoomLookupDtoListResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone(): RoomLookupDtoListResultDto {
+        const json = this.toJSON();
+        let result = new RoomLookupDtoListResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IRoomLookupDtoListResultDto {
+    items: RoomLookupDto[] | undefined;
 }
 
 export enum TenantAvailabilityState {

@@ -75,7 +75,7 @@ import { AppComponent } from './app.component';
                     },
                         {
                        path: 'patientsAdmission',
-                      loadChildren: () => import('./PatientsAdmission/PatientAdmission-module').then(m => m.PatientAdmissionsModule),
+                      loadChildren: () => import('./PatientsAdmission/PatientAdmission-routing.module').then(m => m.PatientAdmissionsRoutingModule),
                        canActivate: [AppRouteGuard],
                     },
                 ],

@@ -1,94 +1,131 @@
-<form class="form-horizontal" autocomplete="off" #editAdmissionForm="ngForm" (ngSubmit)="save()">
-    <abp-modal-header [title]="'EditPatientAdmission' | localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+<form class="form-horizontal" autocomplete="off" #editPatientForm="ngForm" (ngSubmit)="save()">
+  <abp-modal-header [title]="'EditPatientAdmission' | localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
 
-    <div class="modal-body">
-        <tabset>
-            <tab [heading]="'AdmissionDetails' | localize" class="pt-3 px-2">
+  <div class="modal-body">
+    <tabset>
+      <tab [heading]="'PatientAdmissionDetails' | localize" class="pt-3 px-2">
 
-                <!-- Patient Dropdown -->
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label">{{ 'Patient' | localize }}</label>
-                    <div class="col-md-9">
-                        <select
-                            class="form-control"
-                            [(ngModel)]="admission.patientId"
-                            name="patientId"
-                            required
-                        >
-                            <option *ngFor="let patient of patients" [value]="patient.id">{{ patient.fullName }}</option>
-                        </select>
-                    </div>
-                </div>
+        <!-- Patient Id -->
+        <div class="form-group row required">
+          <label class="col-md-3 col-form-label" for="patientId">{{ 'PatientId' | localize }}</label>
+          <div class="col-md-9">
+            <input
+              type="number"
+              class="form-control"
+              name="patientId"
+              id="patientId"
+              required
+              [(ngModel)]="patientAdmission.patientId"
+              #patientIdModel="ngModel"
+              #patientIdEl
+            />
+            <abp-validation-summary [control]="patientIdModel" [controlEl]="patientIdEl"></abp-validation-summary>
+          </div>
+        </div>
 
-                <!-- Doctor Dropdown -->
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label">{{ 'Doctor' | localize }}</label>
-                    <div class="col-md-9">
-                        <select
-                            class="form-control"
-                            [(ngModel)]="admission.doctorId"
-                            name="doctorId"
-                            required
-                        >
-                            <option *ngFor="let doctor of doctors" [value]="doctor.id">{{ doctor.fullName }}</option>
-                        </select>
-                    </div>
-                </div>
+        <!-- Doctor Id -->
+        <div class="form-group row required">
+          <label class="col-md-3 col-form-label" for="doctorId">{{ 'DoctorId' | localize }}</label>
+          <div class="col-md-9">
+            <input
+              type="number"
+              class="form-control"
+              name="doctorId"
+              id="doctorId"
+              required
+              [(ngModel)]="patientAdmission.doctorId"
+              #doctorIdModel="ngModel"
+              #doctorIdEl
+            />
+            <abp-validation-summary [control]="doctorIdModel" [controlEl]="doctorIdEl"></abp-validation-summary>
+          </div>
+        </div>
 
-                <!-- Bed Dropdown -->
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label">{{ 'Bed' | localize }}</label>
-                    <div class="col-md-9">
-                        <select
-                            class="form-control"
-                            [(ngModel)]="admission.bedId"
-                            name="bedId"
-                            required
-                        >
-                            <option *ngFor="let bed of beds" [value]="bed.id">{{ bed.bedNumber }}</option>
-                        </select>
-                    </div>
-                </div>
+        <!-- Bed Id -->
+        <div class="form-group row required">
+          <label class="col-md-3 col-form-label" for="bedId">{{ 'BedId' | localize }}</label>
+          <div class="col-md-9">
+            <input
+              type="number"
+              class="form-control"
+              name="bedId"
+              id="bedId"
+              required
+              [(ngModel)]="patientAdmission.bedId"
+              #bedIdModel="ngModel"
+              #bedIdEl
+            />
+            <abp-validation-summary [control]="bedIdModel" [controlEl]="bedIdEl"></abp-validation-summary>
+          </div>
+        </div>
 
-                <!-- Admission Date -->
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label">{{ 'AdmissionDate' | localize }}</label>
-                    <div class="col-md-9">
-                        <input type="datetime-local" class="form-control" [(ngModel)]="admission.admissionDate" name="admissionDate" required />
-                    </div>
-                </div>
+        <!-- Admission Date -->
+        <div class="form-group row required">
+          <label class="col-md-3 col-form-label" for="admissionDate">{{ 'AdmissionDate' | localize }}</label>
+          <div class="col-md-9">
+            <input
+              type="date"
+              class="form-control"
+              name="admissionDate"
+              id="admissionDate"
+              required
+              [(ngModel)]="patientAdmission.admissionDate"
+              #admissionDateModel="ngModel"
+              #admissionDateEl
+            />
+            <abp-validation-summary [control]="admissionDateModel" [controlEl]="admissionDateEl"></abp-validation-summary>
+          </div>
+        </div>
 
-                <!-- Discharge Date -->
-                <div class="form-group row">
-                    <label class="col-md-3 col-form-label">{{ 'DischargeDate' | localize }}</label>
-                    <div class="col-md-9">
-                        <input type="datetime-local" class="form-control" [(ngModel)]="admission.dischargeDate" name="dischargeDate" />
-                    </div>
-                </div>
+        <!-- Discharge Date -->
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="dischargeDate">{{ 'DischargeDate' | localize }}</label>
+          <div class="col-md-9">
+            <input
+              type="date"
+              class="form-control"
+              name="dischargeDate"
+              id="dischargeDate"
+              [(ngModel)]="patientAdmission.dischargeDate"
+            />
+          </div>
+        </div>
 
-                <!-- Diagnosis -->
-                <div class="form-group row">
-                    <label class="col-md-3 col-form-label">{{ 'Diagnosis' | localize }}</label>
-                    <div class="col-md-9">
-                        <input type="text" class="form-control" [(ngModel)]="admission.diagnosis" name="diagnosis" />
-                    </div>
-                </div>
+        <!-- Diagnosis -->
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="diagnosis">{{ 'Diagnosis' | localize }}</label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="diagnosis"
+              id="diagnosis"
+              [(ngModel)]="patientAdmission.diagnosis"
+            />
+          </div>
+        </div>
 
-                <!-- Status -->
-                <div class="form-group row">
-                    <label class="col-md-3 col-form-label">{{ 'Status' | localize }}</label>
-                    <div class="col-md-9">
-                        <input type="text" class="form-control" [(ngModel)]="admission.status" name="status" />
-                    </div>
-                </div>
+        <!-- Status -->
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="status">{{ 'Status' | localize }}</label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="status"
+              id="status"
+              [(ngModel)]="patientAdmission.status"
+            />
+          </div>
+        </div>
 
-            </tab>
-        </tabset>
-    </div>
+      </tab>
+    </tabset>
+  </div>
 
-    <abp-modal-footer
-        [cancelDisabled]="saving"
-        [saveDisabled]="!editAdmissionForm.form.valid || saving"
-        (onCancelClick)="bsModalRef.hide()">
-    </abp-modal-footer>
+  <abp-modal-footer
+    [cancelDisabled]="saving"
+    [saveDisabled]="!editPatientForm.form.valid || saving"
+    (onCancelClick)="bsModalRef.hide()">
+  </abp-modal-footer>
 </form>

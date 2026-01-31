@@ -1,84 +1,108 @@
 import { Component, Injector, OnInit, EventEmitter, Output } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { AppComponentBase } from '@shared/app-component-base';
-import {
-    PatientAdmissionServiceProxy,
-    CreatePatientAdmissionDto,
-    PatientServiceProxy,
-    DoctorServiceProxy,
-    BedServiceProxy,
-    PatientDto,
-    DoctorDto,
-    BedDto
-} from '@shared/service-proxies/service-proxies';
 import { FormsModule } from '@angular/forms';
-import { AbpModalHeaderComponent } from '@shared/components/modal/abp-modal-header.component';
-import { AbpModalFooterComponent } from '@shared/components/modal/abp-modal-footer.component';
-import { AbpValidationSummaryComponent } from '@shared/components/validation/abp-validation.summary.component';
-import { LocalizePipe } from '@shared/pipes/localize.pipe';
-import { TabDirective, TabsetComponent } from 'ngx-bootstrap/tabs';
+import { CommonModule } from '@angular/common';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { AbpModalHeaderComponent } from '../../shared/components/modal/abp-modal-header.component';
+import { AbpModalFooterComponent } from '../../shared/components/modal/abp-modal-footer.component';
+import { LocalizePipe } from '../../shared/pipes/localize.pipe';
+import { AbpValidationSummaryComponent } from "../../shared/components/validation/abp-validation.summary.component";
+
+// Dummy interfaces for DTOs (replace with your actual DTOs)
+interface PatientDto { id: number; name: string; }
+interface DoctorDto { id: number; fullName: string; }
+interface BedDto { id: number; isOccupied: boolean; }
+interface CreatePatientAdmissionDto {
+status: any;
+diagnosis: any;
+dischargeDate: any;
+    patientId?: number;
+    doctorId?: number;
+    bedId?: number;
+    admissionDate?: Date;
+}
+
+// Dummy service proxies (replace with actual services)
+class PatientAdmissionServiceProxy {
+    create(admission: CreatePatientAdmissionDto) { return { subscribe: (obj: any) => obj.next?.() }; }
+}
+class PatientServiceProxy { getAll() { return { subscribe: (obj: any) => obj.next?.({ items: [] }) }; } }
+class DoctorServiceProxy { getAll() { return { subscribe: (obj: any) => obj.next?.({ items: [] }) }; } }
+class BedServiceProxy { getAll() { return { subscribe: (obj: any) => obj.next?.({ items: [] }) }; } }
 
 @Component({
     templateUrl: './Create-PatientAdmission-dialog.component.html',
     standalone: true,
     imports: [
-        FormsModule,
-        AbpModalHeaderComponent,
-        AbpModalFooterComponent,
-        AbpValidationSummaryComponent,
-        LocalizePipe,
-        TabsetComponent,
-        TabDirective
-    ],
+    CommonModule,
+    FormsModule,
+    TabsModule,
+    AbpModalHeaderComponent,
+    AbpModalFooterComponent,
+    LocalizePipe,
+    AbpValidationSummaryComponent
+]
 })
-export class CreatePatientAdmissionDialogComponent extends AppComponentBase implements OnInit {
-    @Output() onSave = new EventEmitter<any>(); 
+export class CreatePatientAdmissionDialogComponent implements OnInit {
+
+    @Output() onSave = new EventEmitter<void>();
 
     saving = false;
-    admission = new CreatePatientAdmissionDto();
+    admission: CreatePatientAdmissionDto = {
+      status: undefined,
+      diagnosis: undefined,
+      dischargeDate: undefined
+    };
 
     patients: PatientDto[] = [];
     doctors: DoctorDto[] = [];
     beds: BedDto[] = [];
 
+    // Dummy notify and l function
+    notify = {
+        info: (msg: string) => alert(msg),
+        warn: (msg: string) => alert(msg),
+        error: (msg: string) => alert(msg)
+    };
+    l = (key: string) => key;
+
     constructor(
-        injector: Injector,
         private _admissionService: PatientAdmissionServiceProxy,
         private _patientService: PatientServiceProxy,
         private _doctorService: DoctorServiceProxy,
         private _bedService: BedServiceProxy,
         public bsModalRef: BsModalRef
-    ) {
-        super(injector);
-    }
+    ) {}
 
     ngOnInit(): void {
-        this.admission.isActive = true; 
         this.loadPatients();
         this.loadDoctors();
         this.loadBeds();
     }
 
     loadPatients(): void {
-        this._patientService.getAll().subscribe(result => {
-            this.patients = result; 
+        this._patientService.getAll().subscribe(res => {
+            this.patients = res.items ?? [];
         });
     }
 
     loadDoctors(): void {
-        this._doctorService.getAll().subscribe(result => {
-            this.doctors = result;
+        this._doctorService.getAll().subscribe(res => {
+            this.doctors = res.items ?? [];
         });
     }
 
     loadBeds(): void {
-        this._bedService.getAll().subscribe(result => {
-            this.beds = (result ?? []).filter(b => !b.isOccupied);
+        this._bedService.getAll().subscribe(res => {
+            this.beds = (res.items ?? []).filter(b => !b.isOccupied);
         });
     }
 
     save(): void {
-        if (!this.admission.patientId || !this.admission.doctorId || !this.admission.bedId) {
+        if (!this.admission.patientId ||
+            !this.admission.doctorId ||
+            !this.admission.bedId ||
+            !this.admission.admissionDate) {
             this.notify.warn(this.l('PleaseSelectRequiredFields'));
             return;
         }
@@ -92,8 +116,7 @@ export class CreatePatientAdmissionDialogComponent extends AppComponentBase impl
                 this.onSave.emit();
                 this.saving = false;
             },
-            error: (err) => {
-                console.error(err);
+            error: () => {
                 this.notify.error(this.l('SaveFailed'));
                 this.saving = false;
             }
